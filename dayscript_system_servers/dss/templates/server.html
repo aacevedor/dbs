@@ -1,0 +1,103 @@
+{% load staticfiles %}
+<html class="no-js" lang="en">
+<!-- Head start-->
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="x-ua-compatible" content="ie=edge"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <!--Zurb Foundation css-->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/foundation/6.2.3/foundation.min.css"/>
+  <!-- App css custom-->
+  <link rel="stylesheet" href="{% static 'app/css/style.css'%}"/>
+  <!-- JQuery Library -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.min.js"></script>
+  <!-- Zurb Foundarion JS-->
+  <script src="https://cdn.jsdelivr.net/foundation/6.2.3/foundation.min.js"></script>
+
+   <!-- AngularIO 2.0 modules NPM -->
+   <script src="{% static 'node_modules/core-js/client/shim.min.js'%}"></script>
+   <script src="{% static 'node_modules/zone.js/dist/zone.js'%}"></script>
+   <script src="{% static 'node_modules/reflect-metadata/Reflect.js'%}"></script>
+   <script src="{% static 'node_modules/systemjs/dist/system.src.js'%}"></script>
+   <!-- 2. Configure SystemJS -->
+   <script src="{% static 'systemjs.config.js'%}"></script>
+   <script>
+     System.import('app').catch(function(err){ console.error(err); });
+   </script>
+   <title> Dayscript Management Resources </title>
+   <!-- AngularIO custom JS-->
+</head>
+<!-- Head end-->
+<body>
+ <div class="title-bar" data-responsive-toggle="main-menu" data-hide-for="medium">
+   <button class="menu-icon" type="button" data-toggle></button>
+   <div class="title-bar-title">Menu</div>
+ </div>
+ <div class="top-bar" id="main-menu">
+   <div class="top-bar-left">
+     <ul class="dropdown menu" data-dropdown-menu>
+       <li class="menu-text">{{ title }}</li>
+     </ul>
+   </div>
+   <div class="top-bar-right">
+     <ul class="menu" data-responsive-menu="drilldown medium-dropdown">
+       <li><a href="/">Home</a></li>
+       <li class="has-submenu">
+         <a href="#">Options</a>
+         <ul class="submenu menu vertical" data-submenu>
+           <li><a href="#">New Server</a></li>
+           <li><a href="#">Edit Server</a></li>
+           <li><a href="#">Delet Server</a></li>
+         </ul>
+       </li>
+       <li><a href="/admin">Admin</a></li>
+       <li><a href="{% url 'logout' %}">Logout</a></li>
+     </ul>
+   </div>
+ </div>
+ <div class="medium-12 row">
+  <div class="medium-6 columns">
+   <h1> {{ data.name }} </h1>
+   <div class="medium-12 columns">
+     <h3>{{ subtitle }}</h3>
+     <h4>Services status:</h4>
+     <span><strong>Ip:</strong>{{data.ipv4_address}}</span><br>
+     <span><strong>Mysql:</strong></span><br>
+     <span><strong>Apache:</strong></span><br>
+   </div>
+   <div class="medium-12 columns">
+     <a href="/server/{{ data.id }}/service/mysql/command/all" class="small button">Mysql</a>
+     <a href="/server/{{ data.id }}/service/files/command/all" class="small button">Files</a>
+     <a href="/server/{{ data.id }}/service/others/command/all" class="small button">All</a>
+     <a href="/server/{{ data.id }}/service/history/command/all" class="small button">History</a>
+
+   </div>
+   {% if data.service %}
+   <div class="medium-12 columns">
+     <h4>{{ data.service }}</h4>
+     <div class="medium-12 columns">
+      <ul>
+       {% for command in data.commands %}
+        <li><a href="/server/{{ data.id }}/service/{{data.service}}/command/{{ command.id }}/" class="small button">{{command.name}}</a></li>
+       {% endfor %}
+      </ul>
+     </div>
+   </div>
+   {% endif %}
+   {% if data.execute %}
+   <div class="medium-12 columns">
+     <h4>Results:</h4>
+     <div class="medium-12 columns">
+       {% for result in data.execute %}
+        <div>{{result}}</div>
+       {% endfor %}
+     </div>
+   </div>
+   {% endif %}
+  </div>
+ </div>
+ <script>
+   $(document).foundation()
+ </script>
+</body>
+</html>
