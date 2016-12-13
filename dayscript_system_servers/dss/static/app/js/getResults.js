@@ -14,8 +14,8 @@ require('rxjs/add/operator/map'); // Library angular2 contrib run the .map() met
 var HttpInfoService = (function () {
     function HttpInfoService(_http) {
         this._http = _http;
-        this._carsUrl = "http://192.168.188.128:8000/command/ls/";
-        this._serversInfo = "http://192.168.188.128:8000/index_json/";
+        this._carsUrl = "/command/ls/";
+        this._serversInfo = "/index_json/";
     }
     HttpInfoService.prototype.getCarsRestful = function () {
         this._http.get(this._carsUrl).map(function (res) { return res.json(); });

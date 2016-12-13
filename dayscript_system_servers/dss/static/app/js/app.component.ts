@@ -57,11 +57,11 @@ export class AppComponent {
     excecute_command(id,service){
       if( service == "mysql" || service == "files" || service == "history" ){
         var command = 'show_databases'
-        var url = 'http://192.168.188.128:8000/service/'+service+'/id/'+id+'/command/'+command
+        var url = '/service/'+service+'/id/'+id+'/command/'+command
       }
       if( service == "mysql_backup"){
         var command = 'mysql_backup '
-        var url = 'http://192.168.188.128:8000/service/'+service+'/id/'+id+'/command/'+command
+        var url = '/service/'+service+'/id/'+id+'/command/'+command
       }
       this._httpInfoService.getCommadResult(url)
           .subscribe(

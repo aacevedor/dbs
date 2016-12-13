@@ -62,11 +62,11 @@ var AppComponent = (function () {
         var _this = this;
         if (service == "mysql" || service == "files" || service == "history") {
             var command = 'show_databases';
-            var url = 'http://192.168.188.128:8000/service/' + service + '/id/' + id + '/command/' + command;
+            var url = '/service/' + service + '/id/' + id + '/command/' + command;
         }
         if (service == "mysql_backup") {
             var command = 'mysql_backup ';
-            var url = 'http://192.168.188.128:8000/service/' + service + '/id/' + id + '/command/' + command;
+            var url = '/service/' + service + '/id/' + id + '/command/' + command;
         }
         this._httpInfoService.getCommadResult(url)
             .subscribe(function (data) { return _this.getInfoCommand = data; }, // put the data returned from the server in our variable
