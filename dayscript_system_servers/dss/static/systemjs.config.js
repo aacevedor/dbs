@@ -7,10 +7,10 @@
 
   // set url or rute for config Django url STATIC_URL, see dayscript_system_servers/settings.py
   var map = {
-    'app':                        'http://192.168.188.128:8000/static/app/js', // 'dist',
-    '@angular':                   'http://192.168.188.128:8000/static/node_modules/@angular',
-    'angular2-in-memory-web-api': 'http://192.168.188.128:8000/static/node_modules/angular2-in-memory-web-api',
-    'rxjs':                       'http://192.168.188.128:8000/static/node_modules/rxjs'
+    'app':                        '/static/app/js', // 'dist',
+    '@angular':                   '/static/node_modules/@angular',
+    'angular2-in-memory-web-api': '/static/node_modules/angular2-in-memory-web-api',
+    'rxjs':                       '/static/node_modules/rxjs'
   };
   // packages tells the System loader how to load when no filename and/or no extension
   var packages = {

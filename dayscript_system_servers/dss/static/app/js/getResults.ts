@@ -9,8 +9,8 @@ import {Observable}     from 'rxjs/Observable';
 
 @Injectable()// indicate to angular2 the class HttpCarService is injectable dependence
 export class HttpInfoService {
-    private _carsUrl:string = "http://192.168.188.128:8000/command/ls/";
-    private _serversInfo:string = "http://192.168.188.128:8000/index_json/";
+    private _carsUrl:string = "/command/ls/";
+    private _serversInfo:string = "/index_json/";
 
     constructor(private _http: Http){ }
 
