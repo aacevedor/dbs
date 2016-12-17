@@ -1,63 +1,63 @@
 {% load staticfiles %}
+<!DOCTYPE html>
 <html class="no-js" lang="en">
 <!-- Head start-->
 <head>
   <meta charset="utf-8" />
   <meta http-equiv="x-ua-compatible" content="ie=edge"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <!--Zurb Foundation css-->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/foundation/6.2.3/foundation.min.css"/>
-  <!-- App css custom-->
-  <link rel="stylesheet" href="{% static 'app/css/style.css'%}"/>
-  <!-- JQuery Library -->
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.min.js"></script>
-  <!-- Zurb Foundarion JS-->
-  <script src="https://cdn.jsdelivr.net/foundation/6.2.3/foundation.min.js"></script>
+  <!-- Bootstrap -->
+    <link href="{% static 'app/vendors/bootstrap/dist/css/bootstrap.css' %}" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="{% static 'app/vendors/font-awesome/css/font-awesome.css' %}" rel="stylesheet">
+    <!-- NProgress -->
+    <link href="{% static 'app/vendors/nprogress/nprogress.css' %}" rel="stylesheet">
+    <!-- Animate.css -->
+    <link href="{% static 'app/vendors/animate.css/animate.min.css' %}" rel="stylesheet">
 
-   <title> Dayscript Management Resources </title>
-   <!-- AngularIO custom JS-->
+    <!-- Custom Theme Style -->
+    <link href="{% static 'app/build/css/custom.css' %}" rel="stylesheet">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.min.js"></script>
+  <title> Dayscript Management Resources </title>
 </head>
 <!-- Head end-->
-<body>
-  <div class="row">
-
-    <div class="medium-4 columns medium-centered" style="background: rgba(0, 0, 0, 0.17);">
-      <div class="medium-12 columns" style="margin: 20px 0px;">
-        <img class="image-style-none medium-centered" src="http://www.dayscript.com/sites/default/files/logo-dayscript.png" alt="dayscript.com" title="dayscript.com">
+<body class="login">
+  <div>
+      <a class="hiddenanchor" id="signup"></a>
+      <a class="hiddenanchor" id="signin"></a>
+      <div class="login_wrapper">
+        <div class="animate form login_form">
+          <section class="login_content">
+            <div class="medium-12 columns" style="margin: 20px 0px;">
+              <img class="image-style-none medium-centered" src="https://lh3.googleusercontent.com/-pXZvOQUBu8Y/AAAAAAAAAAI/AAAAAAAAAAA/AKB_U8viGe2IxzkBBLn8Svf3fwX1gRB0Qg/s96-c-mo/photo.jpg" alt="dayscript.com" title="dayscript.com">
+            </div>
+            {% block content %}
+              {% if form.errors %}
+                <p>Credenciales no coinciden, por favor intentelo de nuevo</p>
+              {% endif %}
+              {% if next %}
+                  {% if user.is_authenticated %}
+                  <p>Your account doesn't have access to this page. To proceed,
+                  please login with an account that has access.</p>
+                  {% else %}
+                  <p>Para ver el contenido de esta pagina debe iniciar sesion.</p>
+                  {% endif %}
+              {% endif %}
+              <form method="post" action="{% url 'login' %}">
+                {% csrf_token %}
+                {{ form.username.label_tag }}
+                {{ form.username }}
+                {{ form.password.label_tag }}
+                {{ form.password }}
+                <input type="submit" value="login" />
+                <input type="hidden" name="next" value="{{ next }}" />
+              </form>
+              {# Assumes you setup the password_reset view in your URLconf #}
+              <p><a href="{% url 'password_reset' %}">Recordar contraseña?</a></p>
+            {% endblock %}
+          </section>
+        </div>
       </div>
-      {% block content %}
-        {% if form.errors %}
-          <p>Your username and password didn't match. Please try again.</p>
-        {% endif %}
-
-        {% if next %}
-            {% if user.is_authenticated %}
-            <p>Your account doesn't have access to this page. To proceed,
-            please login with an account that has access.</p>
-            {% else %}
-            <p>Please login to see this page.</p>
-            {% endif %}
-        {% endif %}
-
-        <form method="post" action="{% url 'login' %}">
-        {% csrf_token %}
-          <table>
-          <tr>
-              <td>{{ form.username.label_tag }}</td>
-              <td>{{ form.username }}</td>
-          </tr>
-          <tr>
-              <td>{{ form.password.label_tag }}</td>
-              <td>{{ form.password }}</td>
-          </tr>
-          </table>
-          <input type="submit" value="login" />
-          <input type="hidden" name="next" value="{{ next }}" />
-        </form>
-        {# Assumes you setup the password_reset view in your URLconf #}
-        <p><a href="{% url 'password_reset' %}">Lost password?</a></p>
-      {% endblock %}
     </div>
-  </div>
 </body>
 </html>

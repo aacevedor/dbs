@@ -16,9 +16,11 @@ Including another URLconf
 from django.conf.urls import include, url
 from django.contrib import admin
 
-""" En esta linea se incluyen las nuevas url que van a pertenecer a la aplicacion de dss """
+
+#- En esta linea se incluyen las nuevas url que pertenecen al modulo dayscript_system_servers
+
 urlpatterns = [
-    url(r'^', include('dss.urls')),
-    url('^', include('django.contrib.auth.urls')), 
+    url('^', include('django.contrib.auth.urls')),
     url(r'^admin/', admin.site.urls),
+    url(r'^', include('dss.urls')),
 ]
