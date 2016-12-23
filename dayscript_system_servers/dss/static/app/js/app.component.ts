@@ -20,11 +20,25 @@ export class KeysPipe implements PipeTransform {
 
 @Component({
   selector: 'my-app',
-  templateUrl: '/static/app/templates/server_info.html',
+  templateUrl: '/static/app/templates/block-server-intro.html',
   directives: [CORE_DIRECTIVES, FORM_DIRECTIVES],
   pipes: [KeysPipe],
   providers: [HttpInfoService]
 })
 export class AppComponent {
-  getMyCarsFromServer:string;
+  NameServer:string ="Servidor de prueba";
+  json:Object;
+  constructor(private _HttpInfoService: HttpInfoService){
+   this.ProcessData();
+  }
+
+  ProcessData(){
+    this._HttpInfoService.getJsonTest().subscribe(
+      data => this.json = data,
+      error => console.log('Error obteniendo el json'),
+      () =>  console.log(this.json) 
+    )
+
+  }
+
 }

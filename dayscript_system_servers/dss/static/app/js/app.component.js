@@ -10,8 +10,8 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 /* INFORMACIóN */
 /*import { nombres de las clases a importar separadas por comas } from 'nombre del archivo';*/
-var core_1 = require('@angular/core'); // importar nucleo de anguar
-var common_1 = require('@angular/common'); // importa librerias adicionales
+var core_1 = require("@angular/core"); // importar nucleo de anguar
+var common_1 = require("@angular/common"); // importa librerias adicionales
 var testing_1 = require("./testing");
 var KeysPipe = (function () {
     function KeysPipe() {
@@ -23,27 +23,35 @@ var KeysPipe = (function () {
         }
         return keys;
     };
-    KeysPipe = __decorate([
-        core_1.Pipe({ name: 'keys' }), 
-        __metadata('design:paramtypes', [])
-    ], KeysPipe);
     return KeysPipe;
 }());
+KeysPipe = __decorate([
+    core_1.Pipe({ name: 'keys' }) // permite convertir un objeto en un arreglo
+    ,
+    __metadata("design:paramtypes", [])
+], KeysPipe);
 exports.KeysPipe = KeysPipe;
 var AppComponent = (function () {
-    function AppComponent() {
+    function AppComponent(_HttpInfoService) {
+        this._HttpInfoService = _HttpInfoService;
+        this.NameServer = "Servidor de prueba";
+        this.ProcessData();
     }
-    AppComponent = __decorate([
-        core_1.Component({
-            selector: 'my-app',
-            templateUrl: '/static/app/templates/server_info.html',
-            directives: [common_1.CORE_DIRECTIVES, common_1.FORM_DIRECTIVES],
-            pipes: [KeysPipe],
-            providers: [testing_1.HttpInfoService]
-        }), 
-        __metadata('design:paramtypes', [])
-    ], AppComponent);
+    AppComponent.prototype.ProcessData = function () {
+        var _this = this;
+        this._HttpInfoService.getJsonTest().subscribe(function (data) { return _this.json = data; }, function (error) { return console.log('Error obteniendo el json'); }, function () { return console.log(_this.json); });
+    };
     return AppComponent;
 }());
+AppComponent = __decorate([
+    core_1.Component({
+        selector: 'my-app',
+        templateUrl: '/static/app/templates/block-server-intro.html',
+        directives: [common_1.CORE_DIRECTIVES, common_1.FORM_DIRECTIVES],
+        pipes: [KeysPipe],
+        providers: [testing_1.HttpInfoService]
+    }),
+    __metadata("design:paramtypes", [testing_1.HttpInfoService])
+], AppComponent);
 exports.AppComponent = AppComponent;
 //# sourceMappingURL=app.component.js.map
