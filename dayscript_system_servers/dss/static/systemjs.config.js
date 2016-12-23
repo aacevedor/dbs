@@ -5,7 +5,7 @@
 (function(global) {
   // map tells the System loader where to look for things
 
-  // set url or rute for config Django url STATIC_URL, see dayscript_system_servers/settings.py
+  // set url or route for config Django url STATIC_URL, see dayscript_system_servers/settings.py
   var map = {
     'app':                        '/static/app/js', // 'dist',
     '@angular':                   '/static/node_modules/@angular',

@@ -9,9 +9,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 /* INFORMACIóN */
-/*
-  import { nombres de las clases a importar separadas por comas } from 'nombre del archivo';
-*/
+/*import { nombres de las clases a importar separadas por comas } from 'nombre del archivo';*/
 var core_1 = require('@angular/core'); // importar nucleo de anguar
 var common_1 = require('@angular/common'); // importa librerias adicionales
 var testing_1 = require("./testing");
@@ -32,15 +30,10 @@ var KeysPipe = (function () {
     return KeysPipe;
 }());
 exports.KeysPipe = KeysPipe;
-var BaseClass = (function () {
-    function BaseClass(_httpInfoService) {
-        this._httpInfoService = _httpInfoService;
-        this.getDataFromServer();
+var AppComponent = (function () {
+    function AppComponent() {
     }
-    BaseClass.prototype.getDataFromServer = function () {
-        $this.getMyCarsFromServer = 'asdsadsad';
-    };
-    BaseClass = __decorate([
+    AppComponent = __decorate([
         core_1.Component({
             selector: 'my-app',
             templateUrl: '/static/app/templates/server_info.html',
@@ -48,9 +41,9 @@ var BaseClass = (function () {
             pipes: [KeysPipe],
             providers: [testing_1.HttpInfoService]
         }), 
-        __metadata('design:paramtypes', [testing_1.HttpInfoService])
-    ], BaseClass);
-    return BaseClass;
+        __metadata('design:paramtypes', [])
+    ], AppComponent);
+    return AppComponent;
 }());
-exports.BaseClass = BaseClass;
+exports.AppComponent = AppComponent;
 //# sourceMappingURL=app.component.js.map

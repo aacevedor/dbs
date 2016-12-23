@@ -1,8 +1,6 @@
 /* INFORMACIóN */
-/*
-  import { nombres de las clases a importar separadas por comas } from 'nombre del archivo';
-*/
-import { Component,Pipe, PipeTransform} from '@angular/core'; // importar nucleo de anguar
+/*import { nombres de las clases a importar separadas por comas } from 'nombre del archivo';*/
+import {Component,Pipe, PipeTransform} from '@angular/core'; // importar nucleo de anguar
 import {CORE_DIRECTIVES, NgClass, FORM_DIRECTIVES, Control, ControlGroup, FormBuilder, Validators} from '@angular/common'; // importa librerias adicionales
 import {HttpInfoService} from "./testing";
 
@@ -27,14 +25,6 @@ export class KeysPipe implements PipeTransform {
   pipes: [KeysPipe],
   providers: [HttpInfoService]
 })
-export class BaseClass{
+export class AppComponent {
   getMyCarsFromServer:string;
-
-  constructor(private _httpInfoService:HttpInfoService){ // extends to HttpCarService class
-    this.getDataFromServer()
-  }
-  getDataFromServer(){
-    this.getMyCarsFromServer = 'asdsadsad'
-  }
-
 }
