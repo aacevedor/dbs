@@ -8,13 +8,13 @@ from django.conf import settings
 from django.contrib.auth.decorators import login_required
 
 from django.contrib.auth.models import User, Permission
-from dss.models import Server,Command,Server_group
+from dss.models import dss_server,dss_command,dss_server_group
 
 import paramiko
 import os
 import json
 
-# login 
+# login
 
 @login_required(login_url='/accounts/login/')
 def index(request):
