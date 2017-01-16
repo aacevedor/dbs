@@ -1,0 +1,5 @@
+#!/var/www/html/dbs/app/bin/python
+
+import sys
+import Pyro.nsc
+Pyro.nsc.main(sys.argv[1:])

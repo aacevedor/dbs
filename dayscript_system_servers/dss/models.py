@@ -43,9 +43,9 @@ class dss_server_os(models.Model):
 class dss_server(models.Model):
     id = models.AutoField('id',primary_key=True)
     name = models.CharField('name',max_length=200)
-    #os = models.CharField(max_length=1, choices=OPERATIVE_SYSTEM,default='0')
     id_server_os = models.ForeignKey(dss_server_os,on_delete=models.CASCADE)
     id_server_group = models.ForeignKey(dss_server_group,on_delete=models.CASCADE)
+    pyro_object_url = models.CharField('object pyro',max_length=200)
     ipv4_address = models.GenericIPAddressField('IP v4 address', unpack_ipv4=True, blank=True, null=True)
     ipv6_address = models.GenericIPAddressField('IP v6 address',protocol='IPv6', blank=True, null=True, unique=True, default=None)
     password = models.CharField('password',max_length=200)

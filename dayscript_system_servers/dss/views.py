@@ -10,6 +10,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User, Permission
 from dss.models import dss_server,dss_command,dss_server_group
 
+import Pyro4
 import paramiko
 import os
 import json
@@ -19,7 +20,21 @@ import json
 @login_required(login_url='/accounts/login/')
 def index(request):
     title ="Dayscript Resources Management"
+    ip = '181.55.210.51'
+    s = dss_server.objects.get(ipv4_address=ip)
+    info_server = Pyro4.Proxy('PYRO:'+s.pyro_object_url+'@'+ ip +':3000')
+    print info_server.mysqldump('asd')
     return render(request,'index.html',{'title':title},content_type="text/html")
+
+
+def record_pyro_obj(request,ip,pyro_obj):
+    s = dss_server.objects.get(ipv4_address=ip)
+    s.pyro_object_url = pyro_obj
+    s.save()
+    print s.pyro_object_url
+    return HttpResponse(json.dumps('Registro Exitoso'), content_type="application/json")
+
+
 
 @login_required(login_url='/accounts/login/')
 def index_json(request):
