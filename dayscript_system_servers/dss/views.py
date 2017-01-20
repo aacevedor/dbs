@@ -20,11 +20,23 @@ import json
 @login_required(login_url='/accounts/login/')
 def index(request):
     title ="Dayscript Resources Management"
-    ip = '181.55.210.51'
-    s = dss_server.objects.get(ipv4_address=ip)
-    info_server = Pyro4.Proxy('PYRO:'+s.pyro_object_url+'@'+ ip +':3000')
-    print info_server.mysqldump('asd')
+    servers = dss_server.objects.filter(status=1); # Return array with servers info
+    Pyro4.config.COMMTIMEOUT = 3 #  Defined timeout for connect whit client
+    Pyro4.config.COMPRESSION = True
+    for server in servers:
+        try:
+            print 'Conectando con ' + server.ipv4_address
+            info_server = Pyro4.Proxy('PYRO:'+server.pyro_object_url+'@'+ server.ipv4_address +':3000')
+            info = info_server.mysqldump('asd')
+            #info = json.loads(info)
+            print info['ariel']['my text']
+        except Exception:
+            print('Pyro traceback:')
+            print("".join(Pyro4.util.getPyroTraceback()))
+            pass
+
     return render(request,'index.html',{'title':title},content_type="text/html")
+
 
 
 def record_pyro_obj(request,ip,pyro_obj):
@@ -33,7 +45,6 @@ def record_pyro_obj(request,ip,pyro_obj):
     s.save()
     print s.pyro_object_url
     return HttpResponse(json.dumps('Registro Exitoso'), content_type="application/json")
-
 
 
 @login_required(login_url='/accounts/login/')
