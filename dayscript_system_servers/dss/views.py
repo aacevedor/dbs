@@ -14,81 +14,18 @@ import paramiko
 import os
 import json
 
-# login 
-
-@login_required(login_url='/accounts/login/')
+# Muestra el index de la aplicacion
+@login_required( login_url='/accounts/login/' )
 def index(request):
     title ="Dayscript Resources Management"
     return render(request,'index.html',{'title':title},content_type="text/html")
 
-@login_required(login_url='/accounts/login/')
-def index_json(request):
-    user = request.user
-    if user.id:
-        serverUser = dict()
-        results = Array()
-        g = request.user.groups.all()
-        con = 0
-        for index in g:
-            gu = Server_group.objects.get(name=index)
-            server = Server.objects.filter(group = gu.id)
-            for s in server:
-                result = execute('null','initial',Server.objects.get(name = s))
-                result.prepare_command()
-                result.excute_command()
-                results[con]['nombre'] = result.dataConection.name
-                results[con]['ip'] = result.dataConection.ipv4_address
-                results[con]['response'] = result.dataConection.response
-                results[con]['id'] = s.id
-                con = con + 1
-        return HttpResponse(json.dumps(results), content_type="application/json")
-    return HttpResponseForbidden()
 
-def server(request,server,service,command):
-    title = 'Dayscript Resources Management'
-    subtitle = 'Select option'
-    output = Array()
-    print command
-    if server:
-        subtitle = 'Select options'
-        s = Server.objects.get(id=server)
-        output['id'] = s.id
-        output['name'] = s.name
-        output['ipv4_address'] = s.ipv4_address
-
-    if service != "all":
-        subtitle = service
-        output['service'] = service
-        n = 0
-        if service == 'files':
-            n = 1
-        if service == 'history':
-            n = 2
-        c = Command.objects.filter(group = n).values('id','command','name')
-        output['commands'] = c
-
-    if command != "all":
-        subtitle = 'Execute Command'
-        cq = Command.objects.get(id=command)
-        sq = Server.objects.get(id = server)
-        conexion = paramiko.Transport((sq.ipv4_address, sq.port))
-        conexion.connect(username = sq.root, password = sq.password)
-        canal = conexion.open_session()
-        canal.exec_command(cq.command)
-        output['execute'] = canal.makefile('rb', -1).readlines()
-        conexion.close()
-
-    return render(request,'server.html',{'title':title,'subtitle':subtitle,'data':output},content_type="text/html")
-
-def cmd(request,service,id,command):
-    results = Array()
-    server = Server.objects.get(id = id)
-    result = execute(service,command,Server.objects.get(name = server))
-    result.prepare_command()
-    result.excute_command()
-    results = result.dataConection.response
-
-    return HttpResponse(json.dumps(results), content_type="application/json")
+# controla todos los procesos ajax
+@login_required()
+def ajax_process( request ):
+    
+    return HttpResponse(json.dumps({'asd':'asd'}), content_type="application/json")
 
 
 class AllowAllKeys(paramiko.MissingHostKeyPolicy):
