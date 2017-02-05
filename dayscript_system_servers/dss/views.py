@@ -29,7 +29,7 @@ def index(request):
             info_server = Pyro4.Proxy('PYRO:'+server.pyro_object_url+'@'+ server.ipv4_address +':3000')
             info = info_server.mysqldump('asd')
             #info = json.loads(info)
-            print info['ariel']['my text']
+            print info
         except Exception:
             print('Pyro traceback:')
             print("".join(Pyro4.util.getPyroTraceback()))
