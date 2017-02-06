@@ -1,9 +1,13 @@
 import datetime
+import requests
+import json
+
 from django.utils import timezone
 #from __future__ import unicode_literals
 
 from django.db import models
 from django import forms
+
 
 # Create your models here.
 from django.db import models
@@ -64,6 +68,67 @@ class dss_server(models.Model):
 
     def was_published_recently(self):
         return self.added >= timezone.now() - datetime.timedelta(days=1)
+
+    def send_nofify_success(self):
+        SendTo = True
+        message = 'Recurso de '+ self.ipv4_address + 'OK'
+        AndroidMessage = 'Conexion ok'
+        priority = 'high'
+        title = self.ipv4_address + 'Conexion'
+
+        url = "https://api.ionic.io/push/notifications"
+        token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiJhNTdlNDEyNi03MDNmLTQ1NDctODA1Ny0zYTI0ODkzNDEyZGMifQ.Kf7j23mS7pwu-wr24kv5AN2DKjhnS20I4ATDdLFjLSU"
+        headers = {
+            'Authorization': "Bearer %s" % token,
+            'Content-Type': "application/json",
+        }
+        payload = { 
+                    'send_to_all': SendTo,
+                    'profile': 'myafarmobile',
+                    'notification': {
+                        'payload': { },
+                        'query':{},
+                        'message': message,
+                        'android': {
+                            'message': AndroidMessage,
+                            'priority': priority,
+                            'title': title
+                        }
+                    }
+                }
+        response = requests.post(url, data=json.dumps(payload), headers=headers)
+        return 'OK'
+
+    def send_nofify_error(self):
+        SendTo = True
+        message = 'Recurso de '+ self.ipv4_address + 'Error'
+        AndroidMessage = 'error'
+        priority = 'high'
+        title = self.ipv4_address + 'Conexion Error'
+
+        url = "https://api.ionic.io/push/notifications"
+        token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiJhNTdlNDEyNi03MDNmLTQ1NDctODA1Ny0zYTI0ODkzNDEyZGMifQ.Kf7j23mS7pwu-wr24kv5AN2DKjhnS20I4ATDdLFjLSU"
+        headers = {
+            'Authorization': "Bearer %s" % token,
+            'Content-Type': "application/json",
+        }
+        payload = { 
+                    'send_to_all': SendTo,
+                    'profile': 'myafarmobile',
+                    'notification': {
+                        'payload': { },
+                        'query':{},
+                        'message': message,
+                        'android': {
+                            'message': AndroidMessage,
+                            'priority': priority,
+                            'title': title
+                        }
+                    }
+                }
+        response = requests.post(url, data=json.dumps(payload), headers=headers)
+        return 'OK'
+
     class Meta:
         verbose_name = t(" Server")
         verbose_name_plural = t(" Servers")
