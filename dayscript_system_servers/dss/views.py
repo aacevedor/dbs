@@ -14,15 +14,12 @@ import Pyro4
 import paramiko
 import os
 import json
+import requests
 
-<<<<<<< HEAD
-# Muestra el index de la aplicacion
-@login_required( login_url='/accounts/login/' )
-=======
+
 # login
 
 @login_required(login_url='/accounts/login/')
->>>>>>> daeacfeb3c52faceacbdfd7b18b87b62a55a6e9e
 def index(request):
     title ="Dayscript Resources Management"
     servers = dss_server.objects.filter(status=1); # Return array with servers info
@@ -33,17 +30,16 @@ def index(request):
             print 'Conectando con ' + server.ipv4_address
             info_server = Pyro4.Proxy('PYRO:'+server.pyro_object_url+'@'+ server.ipv4_address +':3000')
             info = info_server.mysqldump('asd')
-            #info = json.loads(info)
-            print info['ariel']['my text']
+            server.send_nofify_success()
+            print info
         except Exception:
             print('Pyro traceback:')
             print("".join(Pyro4.util.getPyroTraceback()))
+            server.send_nofify_error()
             pass
 
     return render(request,'index.html',{'title':title},content_type="text/html")
 
-<<<<<<< HEAD
-=======
 
 
 def record_pyro_obj(request,ip,pyro_obj):
@@ -52,6 +48,80 @@ def record_pyro_obj(request,ip,pyro_obj):
     s.save()
     print s.pyro_object_url
     return HttpResponse(json.dumps('Registro Exitoso'), content_type="application/json")
+
+def ionic(request):
+    url = "https://api.ionic.io/push/notifications"
+    token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiJhNTdlNDEyNi03MDNmLTQ1NDctODA1Ny0zYTI0ODkzNDEyZGMifQ.Kf7j23mS7pwu-wr24kv5AN2DKjhnS20I4ATDdLFjLSU"
+
+    headers = {
+        'Authorization': "Bearer %s" % token,
+        'Content-Type': "application/json",
+    }
+
+    payload = {
+                'send_to_all': 'true',
+                'profile': 'myafarmobile',
+                'notification': {
+                    'payload': { },
+                    'query':{},
+                    'message': 'prueba python!',
+                    'android': {
+                        'message': 'Hello Android',
+                        'priority': 'high',
+                        'title': "Test Push"
+                    }
+                }
+            }
+
+    response = requests.post(url, data=json.dumps(payload), headers=headers)
+
+
+    return HttpResponse(response.text, content_type="application/json")
+
+def ionic_push_get(request):
+    url = "https://api.ionic.io/push/notifications"
+    token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiJhNTdlNDEyNi03MDNmLTQ1NDctODA1Ny0zYTI0ODkzNDEyZGMifQ.Kf7j23mS7pwu-wr24kv5AN2DKjhnS20I4ATDdLFjLSU"
+    payload = ''
+    headers = {
+        'Authorization': "Bearer %s" % token,
+        'Content-Type': "application/json",
+    }
+
+    response = requests.get(url, data=payload, headers=headers)
+
+
+
+    #url = "https://api.ionic.io//push/notifications/66770a4e-3974-46d9-bf34-81555738c76d/messages"
+    #response = requests.get(url, data=payload, headers=headers)
+
+    return HttpResponse(response.text, content_type="application/json")
+
+
+def send_notify_ionic(SendTo,message,AndroidMessage,priority,title):
+
+    url = "https://api.ionic.io/push/notifications"
+    token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiJhNTdlNDEyNi03MDNmLTQ1NDctODA1Ny0zYTI0ODkzNDEyZGMifQ.Kf7j23mS7pwu-wr24kv5AN2DKjhnS20I4ATDdLFjLSU"
+    headers = {
+        'Authorization': "Bearer %s" % token,
+        'Content-Type': "application/json",
+    }
+    payload = {
+                'send_to_all': SendTo,
+                'profile': 'myafarmobile',
+                'notification': {
+                    'payload': { },
+                    'query':{},
+                    'message': message,
+                    'android': {
+                        'message': AndroidMessage,
+                        'priority': priority,
+                        'title': title
+                    }
+                }
+            }
+    response = requests.post(url, data=json.dumps(payload), headers=headers)
+    return
+
 
 
 @login_required(login_url='/accounts/login/')
@@ -120,13 +190,8 @@ def cmd(request,service,id,command):
     result.prepare_command()
     result.excute_command()
     results = result.dataConection.response
->>>>>>> daeacfeb3c52faceacbdfd7b18b87b62a55a6e9e
 
-# controla todos los procesos ajax
-@login_required()
-def ajax_process( request ):
-    
-    return HttpResponse(json.dumps({'asd':'asd'}), content_type="application/json")
+    return HttpResponse(json.dumps(results), content_type="application/json")
 
 
 class AllowAllKeys(paramiko.MissingHostKeyPolicy):
