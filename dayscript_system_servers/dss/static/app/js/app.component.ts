@@ -16,7 +16,7 @@ export class KeysPipe implements PipeTransform {
     }
     return keys;
   }
-}
+} 
 
 @Component({
   selector: 'my-app',
@@ -36,7 +36,7 @@ export class AppComponent {
     this._HttpInfoService.getJsonTest().subscribe(
       data => this.json = data,
       error => console.log('Error obteniendo el json'),
-      () =>  console.log(this.json) 
+      () =>  console.log(this.json)
     )
 
   }

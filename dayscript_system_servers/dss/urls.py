@@ -1,11 +1,17 @@
 from django.conf.urls import url
 from django.contrib.auth import views as auth_views
 from . import views
+from . import background
+
 
 # - url que pertenecen al modulo dss
 urlpatterns = [
     url(r'^$', views.index, name='index'),
+
+    url(r'^background/angular/(?P<accion>.+)/', background.server_list, name='record_pyro_obj'),
+
     url(r'^record_pyro_obj/(?P<ip>.+)/(?P<pyro_obj>.+)', views.record_pyro_obj, name='record_pyro_obj'),
+
 
 
     url(r'^ionic/',views.ionic,name='ionic'),

@@ -41,7 +41,6 @@ def index(request):
     return render(request,'index.html',{'title':title},content_type="text/html")
 
 
-
 def record_pyro_obj(request,ip,pyro_obj):
     s = dss_server.objects.get(ipv4_address=ip)
     s.pyro_object_url = pyro_obj
