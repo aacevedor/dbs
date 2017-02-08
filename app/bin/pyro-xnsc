@@ -1,0 +1,5 @@
+#!/var/www/html/dbs/app/bin/python
+
+import sys
+import Pyro.xnsc
+Pyro.xnsc.main(sys.argv[1:])

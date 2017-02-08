@@ -1,0 +1,5 @@
+#!/var/www/html/dbs/app/bin/python
+
+import sys
+import Pyro.util
+Pyro.util.genguid_scripthelper(sys.argv[1:])
