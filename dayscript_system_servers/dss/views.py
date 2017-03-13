@@ -8,23 +8,31 @@ from django.conf import settings
 from django.contrib.auth.decorators import login_required
 
 from django.contrib.auth.models import User, Permission
+
 from dss.models import dss_server,dss_command,dss_server_group
+
+from var_dump import var_dump
+
+
+from dss.apps import DssConfig
+from .variables import *
 
 import Pyro4
 import paramiko
 import os
 import json
 import requests
-
+ 
 
 # login
-
+ 
 @login_required(login_url='/accounts/login/')
 def index(request):
     title ="Dayscript Resources Management"
     servers = dss_server.objects.filter(status=1); # Return array with servers info
     Pyro4.config.COMMTIMEOUT = 3 #  Defined timeout for connect whit client
     Pyro4.config.COMPRESSION = True
+
     for server in servers:
         try:
             print 'Conectando con ' + server.ipv4_address
@@ -37,7 +45,6 @@ def index(request):
             print("".join(Pyro4.util.getPyroTraceback()))
             server.send_nofify_error()
             pass
-
     return render(request,'index.html',{'title':title},content_type="text/html")
 
 
@@ -49,9 +56,6 @@ def record_pyro_obj(request,ip,pyro_obj):
     return HttpResponse(json.dumps('Registro Exitoso'), content_type="application/json")
 
 def ionic(request):
-    url = "https://api.ionic.io/push/notifications"
-    token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiJhNTdlNDEyNi03MDNmLTQ1NDctODA1Ny0zYTI0ODkzNDEyZGMifQ.Kf7j23mS7pwu-wr24kv5AN2DKjhnS20I4ATDdLFjLSU"
-
     headers = {
         'Authorization': "Bearer %s" % token,
         'Content-Type': "application/json",
@@ -72,14 +76,12 @@ def ionic(request):
                 }
             }
 
-    response = requests.post(url, data=json.dumps(payload), headers=headers)
+    response = requests.post(ionic['url'], data=json.dumps(payload), headers=headers)
 
 
     return HttpResponse(response.text, content_type="application/json")
 
 def ionic_push_get(request):
-    url = "https://api.ionic.io/push/notifications"
-    token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiJhNTdlNDEyNi03MDNmLTQ1NDctODA1Ny0zYTI0ODkzNDEyZGMifQ.Kf7j23mS7pwu-wr24kv5AN2DKjhnS20I4ATDdLFjLSU"
     payload = ''
     headers = {
         'Authorization': "Bearer %s" % token,
@@ -87,7 +89,6 @@ def ionic_push_get(request):
     }
 
     response = requests.get(url, data=payload, headers=headers)
-
 
 
     #url = "https://api.ionic.io//push/notifications/66770a4e-3974-46d9-bf34-81555738c76d/messages"
@@ -98,8 +99,6 @@ def ionic_push_get(request):
 
 def send_notify_ionic(SendTo,message,AndroidMessage,priority,title):
 
-    url = "https://api.ionic.io/push/notifications"
-    token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiJhNTdlNDEyNi03MDNmLTQ1NDctODA1Ny0zYTI0ODkzNDEyZGMifQ.Kf7j23mS7pwu-wr24kv5AN2DKjhnS20I4ATDdLFjLSU"
     headers = {
         'Authorization': "Bearer %s" % token,
         'Content-Type': "application/json",
@@ -120,8 +119,6 @@ def send_notify_ionic(SendTo,message,AndroidMessage,priority,title):
             }
     response = requests.post(url, data=json.dumps(payload), headers=headers)
     return
-
-
 
 @login_required(login_url='/accounts/login/')
 def index_json(request):
