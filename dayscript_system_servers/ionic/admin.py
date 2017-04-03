@@ -4,7 +4,7 @@ from .models import *
 
 # Register your models here.
 
-#admin.site.register(accounts)
-#admin.site.register(nofication_push)
+admin.site.register(account)
+admin.site.register(nofication_push)
 
 

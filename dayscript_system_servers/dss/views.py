@@ -33,7 +33,7 @@ from .variables import *
 def index(request):
     title ="Dayscript Resources Management"
     servers = dss_server.objects.filter(status=1); # Return array with servers name
-    ionic = account.objects.get(name = 'myafar-mobile')
+    #ionic = account.objects.get(name = 'myafar-mobile')
     Pyro4.config.COMMTIMEOUT = 3 #  Defined timeout for connect whit client
     Pyro4.config.COMPRESSION = True
 
