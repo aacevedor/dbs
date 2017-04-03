@@ -38,6 +38,10 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'dss.apps.DssConfig',# Include the class config for app dss
+    'ionic.apps.IonicConfig',
+    'afar.apps.AfarConfig',
+
+
 
 ]
 

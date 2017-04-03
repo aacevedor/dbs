@@ -1,3 +1,10 @@
+import Pyro4
+import paramiko
+import os
+import sys
+import json
+import requests
+
 from django.shortcuts import render, render_to_response, RequestContext,redirect
 from django.http import HttpResponse
 from django.http import HttpResponseForbidden
@@ -9,27 +16,24 @@ from django.contrib.auth.decorators import login_required
 
 from django.contrib.auth.models import User, Permission
 
-from dss.models import dss_server,dss_command,dss_server_group
+from dss.models import *
+from ionic.models import *
+
 
 from var_dump import var_dump
 
 
-from dss.apps import DssConfig
+#from dss.apps import DssConfig
 from .variables import *
-
-import Pyro4
-import paramiko
-import os
-import json
-import requests
  
 
 # login
- 
+  
 @login_required(login_url='/accounts/login/')
 def index(request):
     title ="Dayscript Resources Management"
-    servers = dss_server.objects.filter(status=1); # Return array with servers info
+    servers = dss_server.objects.filter(status=1); # Return array with servers name
+    ionic = account.objects.get(name = 'myafar-mobile')
     Pyro4.config.COMMTIMEOUT = 3 #  Defined timeout for connect whit client
     Pyro4.config.COMPRESSION = True
 
